@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<library path="lib/libcarla_shell_bridge">
+    <class type="carla_shell_bridge::CarlaSimulationVehicleInterface"
+           name="carla_shell_bridge/CarlaSimulationVehicleInterface"
+           base_class_type="nodelet::Nodelet">
+        <description>
+            Nodelet to interface with CARLA vehicle control messages
+        </description>
+    </class>
+</library>
