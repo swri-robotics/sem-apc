@@ -1,0 +1,21 @@
+<launch>
+      <!-- Sleep for a second before launching to ensure the environment is up -->
+      <node pkg="shell_simulation"
+            name="shell_simulation_node"
+            type="shell_simulation_node"
+            launch-prefix="bash -c 'sleep 1.0; $0 $@'"
+            />
+  
+      <!-- Shift into gear! -->
+      <node name="gear_shift"
+            pkg="rostopic"
+            type="rostopic"
+            args="pub /gear_command std_msgs/String '{data: forward}'"/>
+
+      <!-- Accelerate forward!  This will hit the first goal. -->
+      <node name="accelerator"
+            pkg="rostopic"
+            type="rostopic"
+            args="pub /throttle_command std_msgs/Float64 '{data: 0.4}'"/>
+
+</launch>  
