@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <!-- CARLA connection -->
+  <arg name='host' default='localhost'/>
+  <arg name='port' default='2000'/>
+  <arg name='timeout' default='30'/>
+
+  <!-- Ego vehicle -->
+  <arg name='role_name' default='ego_vehicle'/>
+  <arg name="vehicle_filter" default='vehicle.*'/>
+
+
+  <!-- Map to load on startup (either a predefined CARLA town (e.g. 'Town01'), or a OpenDRIVE map file) -->
+  <arg name="town" default='Town03_Opt'/>
+
+  <!-- Enable/disable passive mode -->
+  <arg name='passive' default='false'/>
+  <param name="use_sim_time" value="true" />
+
+  <!-- Synchronous mode-->
+  <arg name='synchronous_mode_wait_for_vehicle_control_command' default='false'/>
+  <arg name='synchronous_mode' default='true'/>
+  <arg name='fixed_delta_seconds' default='0.05'/>
+
+
+  <!-- CARLA NODES -->
+  <include file="$(find carla_ros_bridge)/launch/carla_ros_bridge.launch" launch-prefix="bash -c 'sleep 10.0; $0 $@' ">
+    <arg name='host' value='$(arg host)'/>
+    <arg name='port' value='$(arg port)'/>
+    <arg name='town' value='$(arg town)'/>
+    <arg name='timeout' value='$(arg timeout)'/>
+    <arg name='passive' value='$(arg passive)'/>
+    <arg name='synchronous_mode' value='$(arg synchronous_mode)'/>
+    <arg name='synchronous_mode_wait_for_vehicle_control_command' value='$(arg synchronous_mode_wait_for_vehicle_control_command)'/>
+    <arg name='fixed_delta_seconds' value='$(arg fixed_delta_seconds)'/>
+  </include>
+
+  <arg name="objects_definition_file" default='objects.json'/>
+  <!-- use comma separated format "x,y,z,roll,pitch,yaw", 
+    and parameter name spawn_point_<vehicle_name>. You can add
+    as many spawn_point as vehicles defined in objects_definition_file-->
+  <arg name="spawn_point_ego_vehicle" default="0.0,0.0,1.0"/>
+  <arg name="spawn_sensors_only" default="false"/>
+
+  <!-- the ego vehicle, that will be controlled by an agent (e.g. carla_ad_agent) -->
+  <include file="$(find carla_spawn_objects)/launch/carla_example_ego_vehicle.launch">
+    <arg name="objects_definition_file" value='objects.json'/>
+    <arg name='role_name' value='$(arg role_name)'/>
+    <arg name="spawn_point_ego_vehicle" value="$(arg spawn_point_ego_vehicle)"/>
+    <arg name="spawn_sensors_only" value="false"/>
+  </include>
+
+</launch>
